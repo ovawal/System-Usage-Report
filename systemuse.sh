@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Script to check system system information 
+# Script to check system information 
+
+# Valdate sudo 
 
 sudo -v 
 if [ $? -ne 0 ]; then
@@ -8,10 +10,12 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
+# Log in variables
 
 FAILED_LOGGINS=$(sudo lastb -n 5)
 FAILED_LOGGINS_STATUS=$?
 
+# Disk space variables
 
 SPACE=$(df -h / | awk 'NR==2 {print $2}')
 SPACE_STATUS=$?
@@ -19,6 +23,8 @@ SPACE_STATUS=$?
 USED_SPACE=$(df -h / | awk 'NR==2 {print $3}')
 
 FREE_SPACE=$(df -h / | awk 'NR==2 {print $4}')
+
+# Uptime variables
 
 UPTIME=$(uptime -p 2> /dev/null | awk '{print $2, $3, $4, $5}')
 UPTIME_STATUS=$?
@@ -28,35 +34,39 @@ UPTIME_STATUS=$?
 USERS=$(users | sort -u | wc -l) 
 USERS_STATUS=$?
 
-echo "Hello $(hostname -s)..."
-sleep 1
-echo
+# Introduction
+
+echo -e "\n#################\n"
+echo "Hostname: $(hostname -s)"
+echo "OS: $(uname -o)"
+echo "IP Address: $(ip -br addr show | awk 'NR==2 {print $3}')"
 
 # Check system uptime
 
+echo -e  "\n#################\n"
 if [ $UPTIME_STATUS -eq 0 ]; then
-	echo "Your system has been up for $UPTIME"
+	echo "Uptime: $UPTIME"
 else
 	echo "Error checking uptime"
 	exit 1
 fi
 
-echo
 
 # Check root size
 
+echo -e "\n#################\n"
 if [ $SPACE_STATUS -eq 0 ]; then
-	echo "System size is $SPACE"
-	echo "Used root space is $USED_SPACE and free space is $FREE_SPACE"
+	echo "Root size: $SPACE"
+	echo -e "Used root space: $USED_SPACE \nFree root space: $FREE_SPACE"
 else
 	echo "Error checking size"
 	exit 1
 fi
 
-echo
 
 # Check failed login attempts
 
+echo -e "\n#################\n"
 if [ $FAILED_LOGGINS_STATUS -eq 0 ]; then
 	echo -e "Recent failed logging \n $FAILED_LOGGINS"
 	else
@@ -64,10 +74,10 @@ if [ $FAILED_LOGGINS_STATUS -eq 0 ]; then
 		exit 1
 fi
 
-echo
 
 # Check number of logged in users
 
+echo -e "\n#################\n"
 if [ $USERS_STATUS -eq 0 ]; then
 	echo "$USERS logged in user(s)"
 else

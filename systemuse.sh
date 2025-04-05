@@ -5,7 +5,7 @@
 # Valdate sudo 
 
 sudo -v 
-if [ $? -ne 0 ]; then
+if [[ $? -ne 0 ]]; then
 	echo "Password error"
 	exit 1
 fi
@@ -44,7 +44,7 @@ echo "IP Address: $(ip -br addr show | awk 'NR==2 {print $3}')"
 # Check system uptime
 
 echo -e  "\n#################\n"
-if [ $UPTIME_STATUS -eq 0 ]; then
+if [[ $UPTIME_STATUS -eq 0 ]]; then
 	echo "Uptime: $UPTIME"
 else
 	echo "Error checking uptime"
@@ -55,7 +55,7 @@ fi
 # Check root size
 
 echo -e "\n#################\n"
-if [ $SPACE_STATUS -eq 0 ]; then
+if [[ $SPACE_STATUS -eq 0 ]]; then
 	echo "Root size: $SPACE"
 	echo -e "Used root space: $USED_SPACE \nFree root space: $FREE_SPACE"
 else
@@ -67,7 +67,7 @@ fi
 # Check failed login attempts
 
 echo -e "\n#################\n"
-if [ $FAILED_LOGGINS_STATUS -eq 0 ]; then
+if [[ $FAILED_LOGGINS_STATUS -eq 0 ]]; then
 	echo -e "Recent failed logging \n $FAILED_LOGGINS"
 	else
 		echo "Error checking failed login"
@@ -78,7 +78,7 @@ fi
 # Check number of logged in users
 
 echo -e "\n#################\n"
-if [ $USERS_STATUS -eq 0 ]; then
+if [[ $USERS_STATUS -eq 0 ]]; then
 	echo "$USERS logged in user(s)"
 else
 	echo "Error checking users"
